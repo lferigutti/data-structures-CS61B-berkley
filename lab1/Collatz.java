@@ -3,7 +3,7 @@
  */
 public class Collatz {
 
-    /** Implementation made by Leonardo */
+    /** Implementation made by Leonardo. This is a test for git */
     public static int nextNumber(int n) {
         if (n == 1){
             return  n;
