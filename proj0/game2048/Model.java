@@ -173,6 +173,39 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if (emptySpaceExists(b)){
+            return true;
+        }
+        else if (twoAdjacentSameValueExists(b)) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    /**
+     * Helper Function that checks if two adjacent tiles has
+     * the same value, if it does, then return true, if not
+     * return false. This does not allow to check outside the boundaries
+     * of the board
+     */
+    public static boolean twoAdjacentSameValueExists(Board b){
+        for (int col = 0; col < b.size(); col += 1) {
+            for (int row = 0; row < b.size(); row += 1) {
+                if (col + 1 < b.size()) {
+                    if (b.tile(col, row).value() == b.tile(col + 1, row).value()) {
+                        return true;
+                    }
+                }
+                if (row + 1 < b.size()) {
+                    if (b.tile(col, row).value() == b.tile(col, row+1).value()) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
