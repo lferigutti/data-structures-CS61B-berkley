@@ -148,33 +148,8 @@ public class Model extends Observable {
      * 5- go the the next row (done )
      * 6 - check if the original board and the new one are the same board
      *
+     *
      */
-
-    private boolean boardChanged(Board b1, Board b2) {
-        for (int col = 0; col < b1.size(); col += 1) {
-            for (int row = 0; row < b1.size(); row += 1) {
-                if (b1.tile(col,row) != null) {
-                    if (b2.tile(col, row) != null) {
-                        if (b1.tile(col, row).value() != b2.tile(col, row).value()) {
-                            return true;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-                else {
-                    if (b2.tile(col, row) == null){
-                        continue;
-                    } else {
-                        return true;
-                    }
-                }
-            }
-
-        }
-        return  false;
-    }
-
 
     private void rowMechanism(int col) {
         int row_blocked = 0;
