@@ -130,19 +130,21 @@ public class Model extends Observable {
      * 1- where is the next tile above if there is one  (done)
      * 2- check if the next tile is the same number, if there is one (done)
      * 3- Once i get that location i should move the tile to that position (done)
-     * 4- If merge happened i should update the score
-     * 5- go the the next row
+     * 4- If merge happened i should update the score (done)
+     * 5- go the the next row (done )
      *
      */
 
     private void rowMechanism(int col) {
+        int row_blocked = 0;
         for (int row = board.size() - 2; row >= 0 ; row -= 1) {
             Tile t = board.tile(col, row);
             if (board.tile(col, row) != null) {
                 int next_tile_row = getNextTileInSameColumnUpper(board, col, row);
-                boolean scoreIncrement = moveToNextPossibleRow(board, col, row, next_tile_row);
+                boolean scoreIncrement = moveToNextPossibleRow(board, col, row, next_tile_row, row_blocked);
                 if (scoreIncrement){
-                    score += 2 * t.value() ;
+                    score += 2 * t.value();
+                    row_blocked = next_tile_row;
                 }
             }
 
@@ -178,10 +180,11 @@ public class Model extends Observable {
 
 
     /** This function would decide if move or not, and it will return how much should increment the
-     * score
+     * score. It also recives a row_blocked, what it would now if a tile in a row was genrerated in the current
+     * move, in that case it would not allow to move to that part
      * */
 
-    private boolean moveToNextPossibleRow(Board b, int col, int row,  int next_tile_row){
+    private boolean moveToNextPossibleRow(Board b, int col, int row,  int next_tile_row, int row_blocked){
         Tile t1 = b.tile(col,row);
         if (next_tile_row ==0){
            return b.move(col, b.size()-1, t1);
@@ -189,7 +192,7 @@ public class Model extends Observable {
         }
         else {
             Tile t2 = b.tile(col, next_tile_row);
-            if (hasTilesSameValue(t1, t2)){
+            if (hasTilesSameValue(t1, t2) && row_blocked != next_tile_row){
                 return b.move(col, next_tile_row, t1);
 
             } else if (row+1 != next_tile_row ) {
@@ -199,49 +202,6 @@ public class Model extends Observable {
                 return false;
             }
 
-        }
-    }
-
-
-
-
-
-
-
-
-    /** First Approach by Leonardo
-     * It was not working at all
-     * */
-    private void rowMechanism_old(int col) {
-        for (int row = board.size() - 1; row >= 0 ; row -= 1) {
-            Tile t = board.tile(col, row);
-            if (board.tile(col, row) != null) {
-                System.out.println(row);
-                for(int r = row+1;r < board.size();r +=1){
-                    if (board.tile(col,r) == null) {
-                        System.out.println(r + "is null for the row" + row);
-                        if (r+1 == board.size()-1){
-                            if (r != row){
-                                System.out.println("i will move " + row +" to " + r  );
-                                board.move(col,r,t);
-                                break;
-                            }
-                        }
-                        else {
-                        continue;
-                        }
-                    }
-                    else {
-                        if (r-1 != row){
-                            System.out.println("i will move " + row +" to " + (r - 1) );
-                            board.move(col,r-1,t);
-                            break;
-                        }
-                    }
-
-                }
-
-            }
         }
     }
 
