@@ -114,12 +114,137 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        for (int col = 0; col < board.size();col += 1 ) {
+            rowMechanism(col);
+        }
+        changed = true;
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
     }
+
+    /** Function That does the following per row:
+     * Starting from the top all the way to the bottom
+     * 1- where is the next tile above if there is one  (done)
+     * 2- check if the next tile is the same number, if there is one (done)
+     * 3- Once i get that location i should move the tile to that position (done)
+     * 4- If merge happened i should update the score
+     * 5- go the the next row
+     *
+     */
+
+    private void rowMechanism(int col) {
+        for (int row = board.size() - 2; row >= 0 ; row -= 1) {
+            Tile t = board.tile(col, row);
+            if (board.tile(col, row) != null) {
+                int next_tile_row = getNextTileInSameColumnUpper(board, col, row);
+                boolean scoreIncrement = moveToNextPossibleRow(board, col, row, next_tile_row);
+                if (scoreIncrement){
+                    score += 2 * t.value() ;
+                }
+            }
+
+        }
+    }
+
+    /** This funciton checks where is the next tile up on the same column
+     * respect itself, if something is fined it retunrs the row of the next tile
+     * if nothing is found returns 0.
+     * */
+
+    private  int getNextTileInSameColumnUpper(Board b, int col, int current_row){
+        for (int row = current_row + 1; row < b.size(); row +=1){
+            if (row < b.size()){
+                if (b.tile(col, row) == null){
+                    continue;
+                } else {
+                    return row;
+                }
+            }
+        }
+        return 0;
+
+    }
+
+    /* Function that checks if two tiles are have the same value
+
+    * */
+
+    private boolean hasTilesSameValue(Tile t1, Tile t2){
+        return t1.value() == t2.value();
+    }
+
+
+    /** This function would decide if move or not, and it will return how much should increment the
+     * score
+     * */
+
+    private boolean moveToNextPossibleRow(Board b, int col, int row,  int next_tile_row){
+        Tile t1 = b.tile(col,row);
+        if (next_tile_row ==0){
+           return b.move(col, b.size()-1, t1);
+
+        }
+        else {
+            Tile t2 = b.tile(col, next_tile_row);
+            if (hasTilesSameValue(t1, t2)){
+                return b.move(col, next_tile_row, t1);
+
+            } else if (row+1 != next_tile_row ) {
+                return b.move(col,next_tile_row-1,t1);
+
+            } else {
+                return false;
+            }
+
+        }
+    }
+
+
+
+
+
+
+
+
+    /** First Approach by Leonardo
+     * It was not working at all
+     * */
+    private void rowMechanism_old(int col) {
+        for (int row = board.size() - 1; row >= 0 ; row -= 1) {
+            Tile t = board.tile(col, row);
+            if (board.tile(col, row) != null) {
+                System.out.println(row);
+                for(int r = row+1;r < board.size();r +=1){
+                    if (board.tile(col,r) == null) {
+                        System.out.println(r + "is null for the row" + row);
+                        if (r+1 == board.size()-1){
+                            if (r != row){
+                                System.out.println("i will move " + row +" to " + r  );
+                                board.move(col,r,t);
+                                break;
+                            }
+                        }
+                        else {
+                        continue;
+                        }
+                    }
+                    else {
+                        if (r-1 != row){
+                            System.out.println("i will move " + row +" to " + (r - 1) );
+                            board.move(col,r-1,t);
+                            break;
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
