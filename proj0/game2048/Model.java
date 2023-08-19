@@ -1,11 +1,12 @@
 package game2048;
 
 import java.util.Formatter;
+import java.util.Objects;
 import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author Leonardo Ferigutti
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -114,14 +115,27 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        String prevBoard = board.toString();
+        board.setViewingPerspective(side);
+
         for (int col = 0; col < board.size();col += 1 ) {
             rowMechanism(col);
         }
-        changed = true;
+
+        board.setViewingPerspective(Side.NORTH);
+
+        String postBoard = board.toString();
+
+
+        changed = !prevBoard.equals(postBoard);
+
         checkGameOver();
         if (changed) {
             setChanged();
         }
+
+
+
         return changed;
     }
 
@@ -132,8 +146,35 @@ public class Model extends Observable {
      * 3- Once i get that location i should move the tile to that position (done)
      * 4- If merge happened i should update the score (done)
      * 5- go the the next row (done )
+     * 6 - check if the original board and the new one are the same board
      *
      */
+
+    private boolean boardChanged(Board b1, Board b2) {
+        for (int col = 0; col < b1.size(); col += 1) {
+            for (int row = 0; row < b1.size(); row += 1) {
+                if (b1.tile(col,row) != null) {
+                    if (b2.tile(col, row) != null) {
+                        if (b1.tile(col, row).value() != b2.tile(col, row).value()) {
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
+                }
+                else {
+                    if (b2.tile(col, row) == null){
+                        continue;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return  false;
+    }
+
 
     private void rowMechanism(int col) {
         int row_blocked = 0;
@@ -188,7 +229,6 @@ public class Model extends Observable {
         Tile t1 = b.tile(col,row);
         if (next_tile_row ==0){
            return b.move(col, b.size()-1, t1);
-
         }
         else {
             Tile t2 = b.tile(col, next_tile_row);
