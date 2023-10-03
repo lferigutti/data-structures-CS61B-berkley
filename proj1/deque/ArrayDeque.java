@@ -36,6 +36,7 @@ public class ArrayDeque<T> {
     public void addFirst(T item) {
         if (nextFirstItem == nextLastItem){
             // we need to do a resize here.
+            resize(arraySize*2);
         }
 
         items[nextFirstItem] = item;
@@ -46,6 +47,7 @@ public class ArrayDeque<T> {
     public void addLast(T item){
         if (nextFirstItem == nextLastItem){
             // we need to do a resize here.
+            resize(arraySize*2);
         }
 
         items[nextLastItem] = item;
@@ -54,14 +56,22 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst(){
-        T itemRemoved;
+        if ((size < items.length / 4) && (size > 16)){
+            //resize need it
+            resize(items.length/4);
+        }
+
         int indexItemToRemove = indexFirstElement();
-        itemRemoved = removeItem(indexItemToRemove);
+        T itemRemoved = removeItem(indexItemToRemove);
         if (itemRemoved != null) nextFirstItem = indexItemToRemove;
         return  itemRemoved;
     }
 
     public T removeLast(){
+        if ((size < items.length / 4) && (size > 16)){
+            //resize need it
+            resize(items.length/4);
+        }
         int indexItemToRemove = indexLastElement();
         T itemRemoved = removeItem(indexItemToRemove);
         if (itemRemoved != null) nextLastItem = indexItemToRemove;
@@ -76,6 +86,29 @@ public class ArrayDeque<T> {
         return item;
     }
 
+    // Resize the array to a new capacity.
+    private void resize(int capacity){
+        T[] itemsCopy = (T[]) new Object[capacity];
+        int indexFirstItem = indexFirstElement();
+        int indexLastIdem = indexLastElement();
+        int temporaryLengthNewArray = getTemporaryLengthNewArray(indexFirstItem, indexLastIdem);
+        System.arraycopy(items,indexFirstItem,itemsCopy,0,temporaryLengthNewArray);
+        if (temporaryLengthNewArray != size) {
+            System.arraycopy(items, 0, itemsCopy, temporaryLengthNewArray, indexLastIdem + 1);
+        }
+        items = itemsCopy;
+        arraySize = capacity;
+        nextFirstItem = capacity-1;
+        nextLastItem = size;
+    }
+
+    private int getTemporaryLengthNewArray(int indexFirstItem, int indexLastItem){
+        if(indexLastItem<indexFirstItem){
+            return arraySize - indexFirstItem;
+        } else {
+            return indexLastItem - indexFirstItem + 1;
+        }
+    }
     /* Removed Item if the index is with the boundaries
      */
     private T removeItem(int index){
@@ -107,7 +140,7 @@ public class ArrayDeque<T> {
     private int indexLastElement(){
         int indexLastItem = nextLastItem-1;
         if (isBeginningArray(nextLastItem)){
-            indexLastItem =0;
+            indexLastItem =arraySize-1;
         }
         return indexLastItem;
     }
