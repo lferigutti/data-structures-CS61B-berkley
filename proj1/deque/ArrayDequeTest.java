@@ -240,7 +240,27 @@ public class ArrayDequeTest {
             assertEquals(number, element);
             i +=1;
         }
+    }
+    @Test
+    // Test equal method
+    public void equalOverrideTest(){
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        ArrayDeque<Integer> ad2 = new ArrayDeque<>();
 
+        assertTrue("No elements in deque. They should be equal:",ad1.equals(ad1));
+        assertTrue("No elements in deque. They should be different:",ad1.equals(ad2));
+
+        int N = 10;
+        for (int i = 0; i < N; i += 1) {
+            ad1.addLast(i);
+            ad1.addFirst(i+2);
+        }
+        assertFalse("After added some values they should not be equal:",ad2.equals(ad1));
+        for (int i = 0; i < N; i += 1) {
+            ad2.addLast(i);
+            ad2.addFirst(i+2);
+        }
+        assertTrue("They should be equal:", ad1.equals(ad2));
     }
 
 }

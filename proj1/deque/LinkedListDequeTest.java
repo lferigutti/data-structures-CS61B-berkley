@@ -201,5 +201,26 @@ public class LinkedListDequeTest {
         }
 
     }
+    @Test
+    // Test equal method
+    public void equalOverrideTest(){
+        LinkedListDeque<Integer> ad1 = new LinkedListDeque<>();
+        LinkedListDeque<Integer> ad2 = new LinkedListDeque<>();
+
+        assertTrue("No elements in deque. They should be equal:",ad1.equals(ad1));
+        assertTrue("No elements in deque. They should be different:",ad1.equals(ad2));
+
+        int N = 10;
+        for (int i = 0; i < N; i += 1) {
+            ad1.addLast(i);
+            ad1.addFirst(i+2);
+        }
+        assertFalse("After added some values they should not be equal:",ad2.equals(ad1));
+        for (int i = 0; i < N; i += 1) {
+            ad2.addLast(i);
+            ad2.addFirst(i+2);
+        }
+        assertTrue("They should be equal:", ad1.equals(ad2));
+    }
 
 }
