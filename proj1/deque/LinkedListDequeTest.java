@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import edu.princeton.cs.algs4.Stopwatch;
 import edu.princeton.cs.algs4.StdRandom;
 
+import java.util.Optional;
+
 
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
@@ -181,4 +183,23 @@ public class LinkedListDequeTest {
             System.out.println("For the Number of " + N + " items added. It took to add one first item: " + timeInSecondsFirst + " seconds.");
         }
     }
+
+    @Test
+    // Test Iterator of Linked List
+    public void iteratorTest(){
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        int N = 10;
+        for (int i = 0; i < N; i += 1) {
+            lld1.addLast(i);
+            lld1.addFirst(i+2);
+        }
+        int i = 0;
+        for (int element : lld1){
+            int number = lld1.get(i);
+            assertEquals(number, element);
+            i +=1;
+        }
+
+    }
+
 }

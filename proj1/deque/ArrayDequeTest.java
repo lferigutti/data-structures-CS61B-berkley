@@ -225,5 +225,22 @@ public class ArrayDequeTest {
             }
         }
     }
+    @Test
+    // Test Iterator of ArrayDeque
+    public void iteratorTest(){
+        ArrayDeque<Integer> lld1 = new ArrayDeque<>();
+        int N = 10;
+        for (int i = 0; i < N; i += 1) {
+            lld1.addLast(i);
+            lld1.addFirst(i+2);
+        }
+        int i = 0;
+        for (int element : lld1){
+            int number = lld1.get(i);
+            assertEquals(number, element);
+            i +=1;
+        }
+
+    }
 
 }
