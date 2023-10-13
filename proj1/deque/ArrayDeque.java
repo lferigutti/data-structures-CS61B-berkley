@@ -1,8 +1,10 @@
 package deque;
 
+import afu.org.checkerframework.checker.oigj.qual.O;
+
 import java.util.Iterator;
 
-public class ArrayDeque<T> implements Iterable<T> {
+public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     private T[] items;
     private int size;
     private int nextFirstItem;
@@ -15,15 +17,12 @@ public class ArrayDeque<T> implements Iterable<T> {
         nextFirstItem = 3;
         nextLastItem = 4;
     }
-
+    @Override
     public int size() {
         return size;
     }
 
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
+    @Override
     public void printDeque(){
         int trackerPrintItem = nextFirstItem + 1;
         for (int i =0; i < size; i++){
@@ -34,7 +33,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         }
         System.out.println();
     }
-
+    @Override
     public void addFirst(T item) {
         if (nextFirstItem == nextLastItem){
             // we need to do a resize here.
@@ -46,6 +45,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         assignNextFirst();
 
     }
+    @Override
     public void addLast(T item){
         if (nextFirstItem == nextLastItem){
             // we need to do a resize here.
@@ -57,6 +57,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         assignNextLast();
     }
 
+    @Override
     public T removeFirst(){
         if ((size < items.length / 4) && (size > 16)){
             //resize need it
@@ -68,7 +69,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         if (itemRemoved != null) nextFirstItem = indexItemToRemove;
         return  itemRemoved;
     }
-
+    @Override
     public T removeLast(){
         if ((size < items.length / 4) && (size > 16)){
             //resize need it
@@ -79,6 +80,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         if (itemRemoved != null) nextLastItem = indexItemToRemove;
         return  itemRemoved;
     }
+    @Override
     public T get(int index){
         T item = null;
         if (index<size){

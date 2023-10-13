@@ -1,7 +1,7 @@
 package deque;
 
 import java.util.Iterator;
-public class LinkedListDeque<T> implements Iterable<T> {
+public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
 
     private class TNode {
         public T item;
@@ -22,24 +22,24 @@ public class LinkedListDeque<T> implements Iterable<T> {
          sentinel.prev = sentinel;
          sentinel.next = sentinel;
     }
-
+    @Override
     public int size(){
         return size;
     }
 
-    public boolean isEmpty(){
-        return size == 0;
-    }
+    @Override
     public void addFirst(T item){
         sentinel.next = new TNode(item,sentinel,sentinel.next);
         sentinel.next.next.prev = sentinel.next;
         size +=1;
     }
+    @Override
     public void addLast(T item){
             sentinel.prev = new TNode(item,sentinel.prev,sentinel);
             sentinel.prev.prev.next = sentinel.prev;
             size += 1;
     }
+    @Override
     public T removeFirst(){
         T item_to_remove = sentinel.next.item;
         if (item_to_remove !=null){
@@ -50,6 +50,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         return item_to_remove;
 
     }
+    @Override
     public T removeLast(){
         T item_to_remove = sentinel.prev.item;
         if (item_to_remove !=null){
@@ -59,7 +60,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         }
         return item_to_remove;
     }
-
+    @Override
     public T get(int index){
        TNode node = sentinel.next;
        int i = 0;
@@ -87,6 +88,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         } else {return getRecursiveHelper(index, currentIndex+1,nodeToSearch.next);
         }
     }
+    @Override
     public void printDeque(){
         TNode p = sentinel.next;
         while (p.item != null){
