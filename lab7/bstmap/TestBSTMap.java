@@ -9,7 +9,7 @@ public class TestBSTMap {
   	@Test
     public void sanityGenericsTest() {
     	try {
-    		BSTMap<String, String> a = new BSTMap<String, String>();
+    	 	BSTMap<String, String> a = new BSTMap<String, String>();
 	    	BSTMap<String, Integer> b = new BSTMap<String, Integer>();
 	    	BSTMap<Integer, String> c = new BSTMap<Integer, String>();
 	    	BSTMap<Boolean, Integer> e = new BSTMap<Boolean, Integer>();
@@ -25,8 +25,9 @@ public class TestBSTMap {
         for (int i = 0; i < 455; i++) {
             b.put("hi" + i, 1+i);
             //make sure put is working via containsKey and get
-            assertTrue( null != b.get("hi" + i) && (b.get("hi"+i).equals(1+i))
-                        && b.containsKey("hi" + i));
+            assertNotNull(b.get("hi" + i));
+            assertEquals((int) b.get("hi" + i), 1 + i);
+            assertTrue(b.containsKey("hi" + i));
         }
         assertEquals(455, b.size());
         b.clear();
