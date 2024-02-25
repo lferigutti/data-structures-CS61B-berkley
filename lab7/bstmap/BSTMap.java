@@ -1,10 +1,9 @@
 package bstmap;
 
-import net.sf.saxon.functions.ConstantFunction;
 
 import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeMap;
+
 
 
 public class BSTMap<K extends Comparable, V> implements Map61B<K, V> {
