@@ -26,4 +26,25 @@ public class Repository {
     public static final File GITLET_DIR = join(CWD, ".gitlet");
 
     /* TODO: fill in the rest of this class. */
+
+    // TODO: Methods you need to implement:
+    // - init
+    // - add
+    // - commit
+    // - checkout
+
+    /*
+     * Initializes a new gitlet repository.
+     */
+    // TODO : Create .gitlet directory
+    // TODO : Create a new commit with the initial commit message "initial commit"
+    // TODO : Create a new branch called "master" and set it as the current branch
+    public static void init() {
+        if (GITLET_DIR.exists() && GITLET_DIR.isDirectory()){
+            Utils.message("A Gitlet version-control system already exists in the current directory.");
+            System.exit(0);
+        }
+        GITLET_DIR.mkdir();
+    }
+
 }
