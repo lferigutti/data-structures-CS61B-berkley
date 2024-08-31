@@ -2,12 +2,14 @@ package byow.Core;
 
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
+import byow.Core.MapGenerator;
 
 public class Engine {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
+    public static String seed;
 
     /**
      * Method used for exploring a fresh world. This method should handle all inputs,
@@ -38,15 +40,24 @@ public class Engine {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] interactWithInputString(String input) {
-        // TODO: Fill out this method so that it run the engine using the input
         // passed in as an argument, and return a 2D tile representation of the
         // world that would have been drawn if the same inputs had been given
         // to interactWithKeyboard().
         //
         // See proj3.byow.InputDemo for a demo of how you can make a nice clean interface
         // that works for many different input types.
-
-        TETile[][] finalWorldFrame = null;
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+        seed = parseSeed(input);
+        MapGenerator map = new MapGenerator(WIDTH, HEIGHT, seed);
+        TETile[][] finalWorldFrame = map.generateWorld();
+        ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
+    }
+
+    // Parse the seed. It still needs to be implemented
+    private String parseSeed(String input){
+        String seed = input;
+        return seed;
     }
 }
